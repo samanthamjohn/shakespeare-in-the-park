@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'hashie'
 gem 'rails', '3.2.2'
 
 # Bundle edge Rails instead:
