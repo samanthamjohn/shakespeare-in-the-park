@@ -3,20 +3,19 @@ require 'spec_helper'
 describe "I am entering the lotto", js: true do
   it "should win each of your users a ticket" do
     Users.each do |user|
-      visit "http://shakespeareinthepark.org/tickets/virtual-ticketing"
-      click_on "Click here to enter today's ticket drawing."
-      fill_in "LoginForm_Username", with: user.username
-      fill_in "LoginForm_Password", with: user.password
-      click_on "Sign in"
+      visit "http://vtix.shakespeareinthepark.org/"
+      fill_in "Username:", with: user.username
+      fill_in "Password:", with: user.password
+      click_on "Sign In"
 
-      if page.has_css?("#VtixFormStep1_FullName")
-        fill_in "VtixFormStep1_FullName", with: user.full_name
-        fill_in "VtixFormStep1_StreetAddress", with: user.address
-        select "General", from: "VtixFormStep1_SeatingPref"
-        click_on "Continue"
-        check "VtixFormStep2_Agree"
-        click_on "Submit entry"
-        page.should have_content "You have successfully entered today's Virtual Ticket Drawing for General seating!"
+      if page.has_content?("Enter participant name and address")
+        fill_in "ContentPlaceHolder1_VirtualLottery1_NameField", with: user.full_name
+        fill_in "ContentPlaceHolder1_VirtualLottery1_AddressField", with: user.address
+        select "General", from: "ContentPlaceHolder1_VirtualLottery1_LineTypeField"
+        click_on "CONTINUE"
+        check "ContentPlaceHolder1_VirtualLottery1_AgreeField"
+        click_on "CLICK HERE TO SUBMIT"
+        page.should have_content "You have successfully registered for today’s Virtual Ticketing drawing!"
         puts "#{user.full_name} has successfully entered"
       elsif page.has_content? "Your entry has been accepted."
         puts "#{user.full_name} has already entered"
@@ -25,7 +24,7 @@ describe "I am entering the lotto", js: true do
       else
         puts "something went wrong with #{user.full_name}"
       end
-      click_on "Sign out"
+      click_on "Logout"
     end
   end
 end
