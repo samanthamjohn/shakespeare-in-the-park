@@ -14,7 +14,7 @@ describe "I am entering the lotto", js: true do
         select "General", from: "ContentPlaceHolder1_VirtualLottery1_LineTypeField"
         click_on "CONTINUE"
         check "ContentPlaceHolder1_VirtualLottery1_AgreeField"
-        click_on "CLICK HERE TO SUBMIT"
+        click_on "SUBMIT"
         page.should have_content "You have successfully registered for today’s Virtual Ticketing drawing!"
         puts "#{user.full_name} has successfully entered"
       elsif page.has_content? "Your entry has been accepted."
